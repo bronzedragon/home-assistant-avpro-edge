@@ -1,0 +1,139 @@
+# AVPro Edge AC-MX42/82-AUHD for Home Assistant
+
+Custom Home Assistant integration for the AVPro Edge AC-MX42-AUHD and AC-MX82-AUHD HDMI matrices.
+
+Version: **0.4.1**
+
+The integration keeps the historical `avpro_mx42` domain so upgrades from v0.1-v0.3 preserve existing entities and automations.
+
+## v0.4.x highlights
+
+- AC-MX42-AUHD (4x2) and AC-MX82-AUHD (8x2)
+- Persistent TCP/Telnet session on port 23
+- Model-specific command framing:
+  - MX42 legacy F/W 1.xx: leading CRLF compatibility workaround retained
+  - MX82: command + return, matching the MX82 manual
+- Friendly labels for every input and both outputs
+- Output source selects
+- Output video enable switches
+- Per-output auto-switch controls
+- Output 1 4K-to-2K/1080p scaler control
+- Two `media_player` entities, one for each matrix output, with power and source selection
+- MX82 advanced controls:
+  - Extracted-audio binding (Output 1 or Output 2)
+  - AVR mirror/double-switch mode
+  - Extracted-audio enable/mute
+  - HDMI audio mute for Output 1 and Output 2
+- Raw `avpro_mx42.send_command` action remains available
+- Diagnostics include model, Telnet banner, last command/response, and current state
+
+The advanced MX82 status reads are intentionally non-fatal. If a particular firmware does not return one of the documented advanced status replies in a parseable form, that advanced entity becomes unavailable without taking basic matrix routing offline.
+
+## Example labels
+
+Input and output labels are fully configurable. A generic AC-MX82-AUHD configuration might use:
+
+| Port | Label |
+| --- | --- |
+| Input 1 | Source 1 |
+| Input 2 | Source 2 |
+| Input 3 | Source 3 |
+| Input 4 | Source 4 |
+| Input 5 | Source 5 |
+| Input 6 | Source 6 |
+| Input 7 | Source 7 |
+| Input 8 | Source 8 |
+| Output 1 | Display 1 |
+| Output 2 | Display 2 |
+
+These labels live in Home Assistant. They do not change the matrix's built-in 8-character web-interface aliases.
+
+## Hardware topology
+
+### Simple eARC topology
+
+```text
+Sources -> AC-MX82-AUHD -> OUT1 -> Primary Display
+                                      |
+                                      +-- HDMI eARC -> Audio System
+```
+
+Use Output 2 for another display or zone, or leave it unused. This is the simplest layout when the primary display provides the audio return path.
+
+### MX82 AVR-bypass topology
+
+```text
+                         +-> OUT1 -> Primary Display
+Sources -> AC-MX82-AUHD -|
+                         +-> OUT2 -> AVR / Audio System HDMI input
+```
+
+Enable AVR mirror mode when both outputs should follow the same source. This mirrors the matrix's documented AVR-bypass use case.
+
+### HDMI bandwidth note
+
+The AC-MX82-AUHD is an HDMI 2.0(a/b), 18-Gbps matrix with 4K60 4:4:4 support. An HDMI 2.1 source routed through it cannot retain bandwidth-dependent features such as 4K120. If those features matter, route the high-bandwidth source through an appropriate HDMI 2.1 path and use the MX82 for sources that fit within its supported bandwidth.
+
+## Installation / upgrade
+
+### HACS
+
+1. In HACS, add `https://github.com/bronzedragon/home-assistant-avpro-edge` as a **Custom repository** of type **Integration**.
+2. Install **AVPro Edge AC-MX42/82-AUHD**.
+3. Restart Home Assistant.
+4. Open **Settings -> Devices & services -> Add integration -> AVPro Edge AC-MX42/82-AUHD**.
+5. Select the exact model and enter the matrix host/IP and control port (normally 23).
+6. Set friendly input/output labels.
+
+### Manual
+
+Copy `custom_components/avpro_mx42` to `/config/custom_components/avpro_mx42`, then restart Home Assistant.
+
+Existing v0.1-v0.4 entries retain the historical `avpro_mx42` domain and should reload in place. For an existing entry, use **Configure** to change the model or labels.
+
+## Support
+
+Please report integration issues at <https://github.com/bronzedragon/home-assistant-avpro-edge/issues>.
+
+This is an independent Home Assistant community integration and is not affiliated with or endorsed by AVPro Edge.
+
+## Entities
+
+For both models:
+
+- `<Output> source` (`select`)
+- `<Output> video` (`switch`)
+- `<Output> auto-switch` (`switch`)
+- `<Output 1> 4K-to-2K scaler` (`switch`)
+- `<Output>` (`media_player`) with turn on/off and source selection
+
+MX82 only:
+
+- `Extracted audio follows` (`select`)
+- `AVR mirror mode` (`switch`)
+- `Extracted audio` (`switch`)
+- `<Output> HDMI audio mute` (`switch`)
+
+## Example configurations
+
+The `examples/` directory contains:
+
+- `home_theater_dashboard.yaml` - full control dashboard example
+- `home_theater_remote_dashboard.yaml` - compact source remote example
+- `home_theater_package.yaml` - reusable source-routing scripts
+- `home_theater_universal_media_player.yaml` - optional universal media-player facade
+
+The examples use generic names such as **AVPro Matrix**, **Source 1-8**, **Display 1**, **Display 2**, **Primary Display**, and **Audio System**. Verify the entity IDs generated by your own labels in **Developer Tools -> States** and adjust the YAML before use.
+
+## Raw command action
+
+```yaml
+action: avpro_mx42.send_command
+data:
+  config_entry_id: YOUR_CONFIG_ENTRY_ID
+  command: GET STA
+```
+
+## Manual basis for MX82 controls
+
+The AC-MX82-AUHD manual documents TCP/IP control using Telnet port 23, commands terminated by Return, `SET/GET OUTx VS`, output stream, auto switching, Output 1 video scaling, extracted-audio binding, switch mode, extracted audio, HDMI output audio mute, EDID management and network commands.
