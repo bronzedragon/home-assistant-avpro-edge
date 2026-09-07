@@ -1,0 +1,18 @@
+send_command:
+  name: Send command
+  description: Send one advanced ASCII command to an AC-MX42/82-AUHD. The response is written to the Home Assistant log.
+  fields:
+    config_entry_id:
+      name: Config entry ID
+      description: The config entry ID shown in the integration diagnostics or URL.
+      required: true
+      example: 01JZEXAMPLE123456789
+      selector:
+        text:
+    command:
+      name: Command
+      description: One command without a carriage return, such as GET STA.
+      required: true
+      example: GET STA
+      selector:
+        text:

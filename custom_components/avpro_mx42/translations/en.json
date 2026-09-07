@@ -1,0 +1,85 @@
+{
+  "title": "AVPro Edge AC-MX42/82-AUHD",
+  "config": {
+    "step": {
+      "user": {
+        "title": "Connect to an AVPro Edge HDMI matrix",
+        "description": "Select the exact matrix model and connect directly to its TCP/Telnet control interface.",
+        "data": {
+          "model": "Matrix model",
+          "name": "Device name",
+          "host": "Host or IP address",
+          "port": "TCP port"
+        },
+        "data_description": {
+          "model": "Choose AC-MX42-AUHD for four inputs or AC-MX82-AUHD for eight inputs.",
+          "name": "Optional. Leave blank to use the selected AVPro model as the device name.",
+          "host": "A routable hostname or IP address for the matrix.",
+          "port": "The ASCII control port configured in the matrix; normally 23."
+        }
+      },
+      "labels": {
+        "title": "Input and output labels",
+        "description": "Assign friendly Home Assistant labels for {model}. They are used in source selectors and entity names and do not change the matrix web-interface Port Alias settings.",
+        "data": {
+          "input_1_name": "Input 1 label",
+          "input_2_name": "Input 2 label",
+          "input_3_name": "Input 3 label",
+          "input_4_name": "Input 4 label",
+          "input_5_name": "Input 5 label",
+          "input_6_name": "Input 6 label",
+          "input_7_name": "Input 7 label",
+          "input_8_name": "Input 8 label",
+          "output_1_name": "Output 1 label",
+          "output_2_name": "Output 2 label"
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Unable to connect or understand the routing-status response. Verify the address, port, selected model, and matrix firmware.",
+      "duplicate_input_names": "Each input label must be unique.",
+      "duplicate_output_names": "Each output label must be unique."
+    },
+    "abort": {
+      "already_configured": "This matrix is already configured.",
+      "setup_incomplete": "Setup state was lost. Start the integration setup again."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Matrix model",
+        "description": "Select the physical matrix model. Changing from AC-MX42-AUHD to AC-MX82-AUHD enables Inputs 5–8.",
+        "data": {
+          "model": "Matrix model"
+        }
+      },
+      "labels": {
+        "title": "Input and output labels",
+        "description": "Rename the Home Assistant connections for {model}. These labels are separate from the matrix Port Alias settings. The integration reloads automatically after saving.",
+        "data": {
+          "input_1_name": "Input 1 label",
+          "input_2_name": "Input 2 label",
+          "input_3_name": "Input 3 label",
+          "input_4_name": "Input 4 label",
+          "input_5_name": "Input 5 label",
+          "input_6_name": "Input 6 label",
+          "input_7_name": "Input 7 label",
+          "input_8_name": "Input 8 label",
+          "output_1_name": "Output 1 label",
+          "output_2_name": "Output 2 label"
+        }
+      }
+    },
+    "error": {
+      "duplicate_input_names": "Each input label must be unique.",
+      "duplicate_output_names": "Each output label must be unique."
+    }
+  },
+  "services": {
+    "send_command": {
+      "name": "Send command",
+      "description": "Send one advanced ASCII command to an AC-MX42/82-AUHD."
+    }
+  }
+}

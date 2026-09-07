@@ -1,0 +1,14 @@
+{
+  "domain": "avpro_mx42",
+  "name": "AVPro Edge AC-MX42/82-AUHD",
+  "codeowners": [
+    "@bronzedragon"
+  ],
+  "config_flow": true,
+  "documentation": "https://github.com/bronzedragon/home-assistant-avpro-edge",
+  "integration_type": "hub",
+  "iot_class": "local_polling",
+  "issue_tracker": "https://github.com/bronzedragon/home-assistant-avpro-edge/issues",
+  "requirements": [],
+  "version": "0.4.1"
+}
