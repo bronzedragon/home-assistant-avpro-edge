@@ -1,0 +1,91 @@
+# Generic compact phone/wall-panel remote.
+# Requires the scripts from home_theater_package.yaml.
+
+title: AV Remote
+views:
+  - title: Remote
+    path: remote
+    icon: mdi:remote
+    cards:
+      - type: grid
+        columns: 2
+        square: false
+        cards:
+          - type: tile
+            entity: media_player.primary_display
+            name: Primary Display
+          - type: tile
+            entity: media_player.audio_system
+            name: Audio System
+      - type: grid
+        columns: 4
+        square: false
+        cards:
+          - type: button
+            name: Source 1
+            icon: mdi:video-input-hdmi
+            tap_action:
+              action: call-service
+              service: script.avpro_watch_source
+              data: {source: Source 1}
+          - type: button
+            name: Source 2
+            icon: mdi:video-input-hdmi
+            tap_action:
+              action: call-service
+              service: script.avpro_watch_source
+              data: {source: Source 2}
+          - type: button
+            name: Source 3
+            icon: mdi:video-input-hdmi
+            tap_action:
+              action: call-service
+              service: script.avpro_watch_source
+              data: {source: Source 3}
+          - type: button
+            name: Source 4
+            icon: mdi:video-input-hdmi
+            tap_action:
+              action: call-service
+              service: script.avpro_watch_source
+              data: {source: Source 4}
+          - type: button
+            name: Source 5
+            icon: mdi:video-input-hdmi
+            tap_action:
+              action: call-service
+              service: script.avpro_watch_source
+              data: {source: Source 5}
+          - type: button
+            name: Source 6
+            icon: mdi:video-input-hdmi
+            tap_action:
+              action: call-service
+              service: script.avpro_watch_source
+              data: {source: Source 6}
+          - type: button
+            name: Source 7
+            icon: mdi:video-input-hdmi
+            tap_action:
+              action: call-service
+              service: script.avpro_watch_source
+              data: {source: Source 7}
+          - type: button
+            name: Source 8
+            icon: mdi:video-input-hdmi
+            tap_action:
+              action: call-service
+              service: script.avpro_watch_source
+              data: {source: Source 8}
+      - type: entities
+        title: Routing
+        entities:
+          - select.avpro_matrix_display_1_source
+          - select.avpro_matrix_display_2_source
+          - switch.avpro_matrix_avr_mirror_mode
+      - type: button
+        name: All Off
+        icon: mdi:power
+        tap_action:
+          action: call-service
+          service: script.avpro_system_off

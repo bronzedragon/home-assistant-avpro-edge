@@ -1,0 +1,135 @@
+# Generic full dashboard using only built-in Home Assistant cards.
+# Verify/replace entity IDs before importing.
+
+title: AV System
+views:
+  - title: AV System
+    path: av-system
+    icon: mdi:video-input-hdmi
+    type: sections
+    max_columns: 4
+    sections:
+      - type: grid
+        cards:
+          - type: heading
+            heading: AV System
+            icon: mdi:video-input-hdmi
+          - type: markdown
+            content: >-
+              **AVPro AC-MX82-AUHD**
+
+              The MX82 is an 18-Gbps / 4K60 matrix. Use an appropriate direct
+              HDMI 2.1 path for sources that require bandwidth-dependent features
+              such as 4K120.
+          - type: media-control
+            entity: media_player.primary_display
+          - type: media-control
+            entity: media_player.audio_system
+
+      - type: grid
+        cards:
+          - type: heading
+            heading: Sources
+            icon: mdi:video-input-hdmi
+          - type: grid
+            columns: 4
+            square: false
+            cards:
+              - type: button
+                name: Source 1
+                icon: mdi:video-input-hdmi
+                tap_action:
+                  action: call-service
+                  service: script.avpro_watch_source
+                  data: {source: Source 1}
+              - type: button
+                name: Source 2
+                icon: mdi:video-input-hdmi
+                tap_action:
+                  action: call-service
+                  service: script.avpro_watch_source
+                  data: {source: Source 2}
+              - type: button
+                name: Source 3
+                icon: mdi:video-input-hdmi
+                tap_action:
+                  action: call-service
+                  service: script.avpro_watch_source
+                  data: {source: Source 3}
+              - type: button
+                name: Source 4
+                icon: mdi:video-input-hdmi
+                tap_action:
+                  action: call-service
+                  service: script.avpro_watch_source
+                  data: {source: Source 4}
+              - type: button
+                name: Source 5
+                icon: mdi:video-input-hdmi
+                tap_action:
+                  action: call-service
+                  service: script.avpro_watch_source
+                  data: {source: Source 5}
+              - type: button
+                name: Source 6
+                icon: mdi:video-input-hdmi
+                tap_action:
+                  action: call-service
+                  service: script.avpro_watch_source
+                  data: {source: Source 6}
+              - type: button
+                name: Source 7
+                icon: mdi:video-input-hdmi
+                tap_action:
+                  action: call-service
+                  service: script.avpro_watch_source
+                  data: {source: Source 7}
+              - type: button
+                name: Source 8
+                icon: mdi:video-input-hdmi
+                tap_action:
+                  action: call-service
+                  service: script.avpro_watch_source
+                  data: {source: Source 8}
+          - type: button
+            name: System Off
+            icon: mdi:power
+            tap_action:
+              action: call-service
+              service: script.avpro_system_off
+
+      - type: grid
+        cards:
+          - type: heading
+            heading: Matrix Routing
+            icon: mdi:call-split
+          - type: entities
+            title: AC-MX82-AUHD
+            entities:
+              - entity: select.avpro_matrix_display_1_source
+                name: Display 1 source
+              - entity: select.avpro_matrix_display_2_source
+                name: Display 2 source
+              - entity: switch.avpro_matrix_display_1_video
+              - entity: switch.avpro_matrix_display_2_video
+              - entity: switch.avpro_matrix_avr_mirror_mode
+              - entity: select.avpro_matrix_extracted_audio_follows
+              - entity: switch.avpro_matrix_extracted_audio
+              - entity: switch.avpro_matrix_display_1_hdmi_audio_mute
+              - entity: switch.avpro_matrix_display_2_hdmi_audio_mute
+
+      - type: grid
+        cards:
+          - type: heading
+            heading: Matrix Setup
+            icon: mdi:tune
+          - type: entities
+            entities:
+              - entity: switch.avpro_matrix_display_1_auto_switch
+              - entity: switch.avpro_matrix_display_2_auto_switch
+              - entity: switch.avpro_matrix_display_1_4k_to_2k_scaler
+          - type: markdown
+            content: >-
+              **Scaler:** enable only when Output 1 needs to be reduced to
+              1080p/2K. **Auto-switch:** choose according to the behavior you
+              want when HDMI sources connect or disconnect.

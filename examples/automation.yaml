@@ -1,0 +1,14 @@
+# Example: when a source becomes available, route it to Display 1.
+# Replace the trigger entity and source label with values from your installation.
+alias: AVPro Matrix - Source 1 available
+triggers:
+  - trigger: state
+    entity_id: binary_sensor.source_1_available
+    to: "on"
+actions:
+  - action: select.select_option
+    target:
+      entity_id: select.avpro_matrix_display_1_source
+    data:
+      option: Source 1
+mode: restart

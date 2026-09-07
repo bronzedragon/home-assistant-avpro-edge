@@ -1,0 +1,103 @@
+# Generic Home Assistant package example for an AVPro matrix-based AV system.
+#
+# Assumptions:
+#   Matrix device name: AVPro Matrix
+#   Output 1 label: Display 1
+#   Output 2 label: Display 2
+#   Input labels: Source 1 through Source 8
+#
+# IMPORTANT: verify generated entity IDs in Developer Tools -> States.
+# Replace these placeholders with the media-player entities in your installation:
+#   media_player.primary_display
+#   media_player.audio_system
+
+script:
+  avpro_watch_source:
+    alias: AVPro - Watch Source
+    description: >-
+      Power the primary display and audio system, then route the selected source
+      to matrix Output 1.
+    mode: restart
+    fields:
+      source:
+        name: Source
+        required: true
+        selector:
+          select:
+            options:
+              - Source 1
+              - Source 2
+              - Source 3
+              - Source 4
+              - Source 5
+              - Source 6
+              - Source 7
+              - Source 8
+    sequence:
+      - action: media_player.turn_on
+        continue_on_error: true
+        target:
+          entity_id:
+            - media_player.primary_display
+            - media_player.audio_system
+      - action: select.select_option
+        target:
+          entity_id: select.avpro_matrix_display_1_source
+        data:
+          option: "{{ source }}"
+
+  avpro_watch_source_avr_bypass:
+    alias: AVPro - Watch Source (AVR Bypass)
+    description: >-
+      Route the same source to both matrix outputs for an AVR-bypass or mirrored
+      two-output topology.
+    mode: restart
+    fields:
+      source:
+        name: Source
+        required: true
+        selector:
+          select:
+            options:
+              - Source 1
+              - Source 2
+              - Source 3
+              - Source 4
+              - Source 5
+              - Source 6
+              - Source 7
+              - Source 8
+    sequence:
+      - action: media_player.turn_on
+        continue_on_error: true
+        target:
+          entity_id:
+            - media_player.primary_display
+            - media_player.audio_system
+      - action: switch.turn_on
+        continue_on_error: true
+        target:
+          entity_id: switch.avpro_matrix_avr_mirror_mode
+      - action: select.select_option
+        target:
+          entity_id: select.avpro_matrix_display_1_source
+        data:
+          option: "{{ source }}"
+      - action: select.select_option
+        target:
+          entity_id: select.avpro_matrix_display_2_source
+        data:
+          option: "{{ source }}"
+
+  avpro_system_off:
+    alias: AVPro - System Off
+    mode: single
+    sequence:
+      - action: media_player.turn_off
+        continue_on_error: true
+        target:
+          entity_id:
+            - media_player.audio_system
+            - media_player.primary_display
+            - media_player.avpro_matrix_display_1
+            - media_player.avpro_matrix_display_2

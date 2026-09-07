@@ -1,0 +1,9 @@
+# Minimal matrix-only dashboard. Verify/replace entity IDs before importing.
+type: entities
+title: AVPro HDMI Matrix
+entities:
+  - select.avpro_matrix_display_1_source
+  - select.avpro_matrix_display_2_source
+  - switch.avpro_matrix_display_1_video
+  - switch.avpro_matrix_display_2_video
+  - switch.avpro_matrix_avr_mirror_mode

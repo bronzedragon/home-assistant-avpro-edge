@@ -1,0 +1,53 @@
+# Optional universal media-player facade.
+# Verify all entity IDs before use.
+#
+# Source selection controls matrix Output 1, volume/mute commands are delegated
+# to a generic audio-system entity, and power follows a generic display entity.
+
+media_player:
+  - platform: universal
+    name: AV System
+    unique_id: avpro_av_system_universal
+    device_class: receiver
+    children:
+      - media_player.primary_display
+      - media_player.audio_system
+    commands:
+      turn_on:
+        action: media_player.turn_on
+        target:
+          entity_id: media_player.primary_display
+      turn_off:
+        action: script.avpro_system_off
+      select_source:
+        action: select.select_option
+        target:
+          entity_id: select.avpro_matrix_display_1_source
+        data:
+          option: "{{ source }}"
+      volume_up:
+        action: media_player.volume_up
+        target:
+          entity_id: media_player.audio_system
+      volume_down:
+        action: media_player.volume_down
+        target:
+          entity_id: media_player.audio_system
+      volume_set:
+        action: media_player.volume_set
+        target:
+          entity_id: media_player.audio_system
+        data:
+          volume_level: "{{ volume_level }}"
+      volume_mute:
+        action: media_player.volume_mute
+        target:
+          entity_id: media_player.audio_system
+        data:
+          is_volume_muted: "{{ not state_attr('media_player.audio_system', 'is_volume_muted') }}"
+    attributes:
+      state: media_player.primary_display
+      source: select.avpro_matrix_display_1_source
+      source_list: select.avpro_matrix_display_1_source|options
+      volume_level: media_player.audio_system|volume_level
+      is_volume_muted: media_player.audio_system|is_volume_muted
