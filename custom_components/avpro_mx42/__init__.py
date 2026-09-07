@@ -28,6 +28,8 @@ _LOGGER = logging.getLogger(__name__)
 
 AvproConfigEntry = ConfigEntry[AvproCoordinator]
 
+CONFIG_SCHEMA = cv.config_entry_only_config_schema(DOMAIN)
+
 
 async def _async_update_listener(hass: HomeAssistant, entry: AvproConfigEntry) -> None:
     """Reload the matrix when editable model/labels change."""
