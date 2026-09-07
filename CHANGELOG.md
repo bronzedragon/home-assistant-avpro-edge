@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.4.2
+
+- Added new bundled integration brand icon and logo assets for Home Assistant 2026.3+ local brand support.
+- Declared the integration as config-entry-only with `cv.config_entry_only_config_schema(DOMAIN)` to satisfy current Hassfest configuration-schema expectations.
+- Updated the GitHub Actions checkout step to `actions/checkout@v7`.
+- No AVPro protocol, entity, service, or config-entry behavior changes from v0.4.1.
+
 ## 0.4.1
 
 - Migrated the integration to a GitHub/HACS-ready repository layout.
